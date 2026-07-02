@@ -1,32 +1,18 @@
-import { UserButton } from "@clerk/nextjs";
-import { auth, currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
-import { NotifyButton } from "./NotifyButton";
-
-export default async function DashboardPage() {
-  const { userId } = await auth();
-  if (!userId) redirect("/sign-in");
-
-  const user = await currentUser();
-  const firstName = user?.firstName || user?.emailAddresses[0]?.emailAddress || "Runner";
-
+export default function DashboardPage() {
   return (
     <>
       <header className="app-header">
         <div className="page-shell app-header-inner">
           <div>
-            <p className="eyebrow">RunFuel</p>
-            <h1>{firstName}</h1>
+            <p className="eyebrow">Runnies</p>
+            <h1>Marathon Dashboard</h1>
           </div>
-          <div className="header-tools">
-            <NotifyButton />
-            <UserButton />
-          </div>
+          <p className="local-save-note">Speichert lokal in diesem Browser.</p>
         </div>
       </header>
       <iframe
         className="dashboard-frame"
-        title="RunFuel Marathon Dashboard"
+        title="Runnies Marathon Dashboard"
         src="/dashboard-static/lissabon-marathon-dashboard.html"
       />
     </>

@@ -1,11 +1,5 @@
-import { SignUp } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 export default function SignUpPage() {
-  return (
-    <main className="auth-screen">
-      <div className="auth-card">
-        <SignUp routing="path" path="/sign-up" signInUrl="/sign-in" />
-      </div>
-    </main>
-  );
+  redirect("/dashboard");
 }
