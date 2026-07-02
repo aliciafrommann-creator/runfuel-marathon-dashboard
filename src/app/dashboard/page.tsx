@@ -20,7 +20,7 @@ export default async function DashboardPage() {
           </div>
           <div className="header-tools">
             <NotifyButton />
-            <UserButton afterSignOutUrl="/" />
+            <UserButton />
           </div>
         </div>
       </header>
