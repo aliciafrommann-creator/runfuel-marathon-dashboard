@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lissabon Marathon Dashboard</title>
+  <title>Runnies Marathon Dashboard</title>
   <style>
     :root {
       color-scheme: light;
@@ -1260,9 +1260,9 @@
   <header class="topbar">
     <div class="shell topbar-inner">
       <div>
-        <p class="eyebrow">14-Wochen-Trainingsplan</p>
-        <h1>Lissabon Marathon Dashboard</h1>
-        <p class="subtitle">10. Oktober 2026 · Zielbereich 3:45-3:50 · Laufen, Rad, HIIT, Functional Training, Kraft und Tests in einem Tracker.</p>
+        <p class="eyebrow">Runnies · lokaler Trainingsplan</p>
+        <h1>Runnies Marathon Dashboard</h1>
+        <p class="subtitle">Laufen, Rad, HIIT, Functional Training, Kraft, Ernährung und Fortschritt in einem lokalen Tracker.</p>
       </div>
       <div class="race-pill" aria-live="polite">
         <strong id="daysToRace">-</strong>
@@ -1431,9 +1431,10 @@
   </main>
 
   <script>
-    const DEFAULT_APP_TITLE = "Lissabon Marathon Dashboard";
+    const DEFAULT_APP_TITLE = "Runnies Marathon Dashboard";
     const DEFAULT_PLAN_START_DATE = "2026-07-01";
     const RACE_DATE = new Date("2026-10-10T09:00:00");
+    const STORAGE_VERSION = 2;
     const STORAGE_KEY = "lisbon-marathon-dashboard-v1";
     const NUTRITION_CONTENT_VERSION = 2;
 
@@ -1721,7 +1722,7 @@
         label: "W14",
         title: "Woche 14",
         range: "5.-11. Oktober 2026",
-        focus: "Rennwoche · Lissabon",
+        focus: "Rennwoche",
         start: "2026-10-05",
         end: "2026-10-11",
         targetMin: 14,
@@ -1733,7 +1734,7 @@
           { id: "w14-mi", dow: "Mi", date: "2026-10-07", zone: "Z1-Z2", note: "", kmMin: 5, kmMax: 5, tasks: [{ id: "easy", type: "run", text: "5 km Easy" }] },
           { id: "w14-do", dow: "Do", date: "2026-10-08", zone: "Z1", note: "Startunterlagen / Reise organisieren", kmMin: 0, kmMax: 0, tasks: [{ id: "rest-mobility", type: "mobility", text: "Ruhetag + 10-15 Min. Mobility" }, { id: "functional", type: "functional", text: "Functional Activation 10 Min. · Atmung, Mobility, leichte Aktivierung" }] },
           { id: "w14-fr", dow: "Fr", date: "2026-10-09", zone: "Z1-Z3", note: "frisch aufhören", kmMin: 3, kmMax: 5, tasks: [{ id: "shakeout", type: "run", text: "20-25 Min. Shakeout + 4 x 15 Sek. Steigerung" }] },
-          { id: "w14-sa", dow: "Sa", date: "2026-10-10", zone: "Race", note: "Pacing nach finaler Zielzeit", kmMin: 42.195, kmMax: 42.195, tasks: [{ id: "marathon", type: "race", text: "LISSABON MARATHON · 42,195 km" }] },
+          { id: "w14-sa", dow: "Sa", date: "2026-10-10", zone: "Race", note: "Pacing nach finaler Zielzeit", kmMin: 42.195, kmMax: 42.195, tasks: [{ id: "marathon", type: "race", text: "MARATHON · 42,195 km" }] },
           { id: "w14-so", dow: "So", date: "2026-10-11", zone: "Z1", note: "keine Recovery-Pflichtübung", kmMin: 0, kmMax: 0, tasks: [{ id: "recover", type: "rest", text: "Spaziergang, essen, trinken, feiern" }] }
         ]
       }
@@ -1751,8 +1752,9 @@
       onboardingDraft: "runfuel_onboarding_draft_v1"
     };
 
-    const APP_VERSION = "1.1.0-phase1";
-    const PLAN_GENERATOR_VERSION = "1.0.0-rulebased";
+    const APP_VERSION = "1.2.0-stabilization";
+    const PLAN_GENERATOR_VERSION = "1.0.1-rulebased";
+    const APP_STORAGE_KEYS = [STORAGE_KEY, ...Object.values(RUNFUEL_KEYS)];
     const FEASIBILITY_CONFIG = {
       realisticMaxImprovement: 0.03,
       ambitiousMaxImprovement: 0.06,
@@ -1917,7 +1919,7 @@
     ];
 
     const MICRO_CARDS = [
-      { title: "Eisen + Vitamin C", foods: ["Linsen", "Tofu", "Kürbiskerne", "Hafer", "Spinat", "Paprika", "Kiwi", "Zitrone"], note: "Eisenmahlzeit mit Vitamin C kombinieren; Kaffee/Tee nicht direkt dazu." },
+      { title: "Eisen + Vitamin C", foods: ["Linsen", "Tofu", "Kürbiskerne", "Hafer", "Paprika", "Kiwi", "Zitrone"], note: "Eisenmahlzeit mit Vitamin C kombinieren; Kaffee/Tee nicht direkt dazu. Spinat ist hier nur ergänzend, nicht primäre Eisenquelle." },
       { title: "Zink", foods: ["Kürbiskerne", "Hanfsamen", "Tahini", "Cashews", "Hafer", "Sauerteig", "Eier", "Skyr"], note: "Einweichen, Keimen und Sauerteig können die Aufnahme unterstützen." },
       { title: "Folat", foods: ["Linsen", "Kichererbsen", "Spinat", "Rucola", "Brokkoli", "Avocado", "Orange", "Eier"], note: "Bei B12-Mangel Folat und B12 medizinisch gemeinsam betrachten." },
       { title: "B12", foods: ["Eier", "Milch", "Joghurt", "Skyr", "Quark", "Käse", "angereicherte Drinks"], note: "Bei diagnostiziertem Mangel ersetzt Ernährung keine Behandlung." },
@@ -1964,6 +1966,9 @@
         customTasks: {},
         taskMoves: {},
         pulse: { rest: 53, max: 190 },
+        storageVersion: STORAGE_VERSION,
+        appVersion: APP_VERSION,
+        nutritionContentVersion: NUTRITION_CONTENT_VERSION,
         pace: { hmTime: "", target: "3:50", longrunStable: false },
         appSettings: {
           title: DEFAULT_APP_TITLE,
@@ -1991,10 +1996,36 @@
       };
     }
 
+    function safeLocalStorageGet(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function safeLocalStorageSet(key, value) {
+      try {
+        localStorage.setItem(key, value);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function safeLocalStorageRemove(key) {
+      try {
+        localStorage.removeItem(key);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
     function loadState() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? mergeState(defaultState(), JSON.parse(raw)) : defaultState();
+        const raw = safeLocalStorageGet(STORAGE_KEY);
+        return raw ? migrateAppData(JSON.parse(raw)) : defaultState();
       } catch (error) {
         return defaultState();
       }
@@ -2004,6 +2035,9 @@
       return {
         ...base,
         ...saved,
+        storageVersion: STORAGE_VERSION,
+        appVersion: APP_VERSION,
+        nutritionContentVersion: NUTRITION_CONTENT_VERSION,
         checks: { ...base.checks, ...(saved.checks || {}) },
         actualKm: { ...base.actualKm, ...(saved.actualKm || {}) },
         dayNotes: { ...base.dayNotes, ...(saved.dayNotes || {}) },
@@ -2019,12 +2053,14 @@
     }
 
     function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      const saved = safeLocalStorageSet(STORAGE_KEY, JSON.stringify(migrateAppData(state)));
+      if (!saved) setExportStatus("Speichern im Browser ist gerade nicht möglich. Bitte Backup exportieren, sobald es wieder geht.");
       scheduleCloudSave();
+      return saved;
     }
 
     function cloudSyncAvailable() {
-      return typeof window !== "undefined" && window.location.protocol.startsWith("http");
+      return typeof window !== "undefined" && !!window.location?.protocol?.startsWith("http");
     }
 
     function scheduleCloudSave() {
@@ -2053,7 +2089,7 @@
         if (payload?.state) {
           cloudSyncReady = true;
           state = mergeState(defaultState(), { ...state, ...payload.state });
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          safeLocalStorageSet(STORAGE_KEY, JSON.stringify(migrateAppData(state)));
           render();
           setExportStatus("Cloud-Daten geladen.");
         } else {
@@ -3061,7 +3097,7 @@
         </div>
         <div class="panel-body">
           <div class="nutrition-card-grid">
-            <div class="nutrition-card"><span>Ziel</span><p>${escapeHtml(goal ? `${goal.distanceLabel} · ${goal.raceDate}` : "Lissabon Template")}</p></div>
+            <div class="nutrition-card"><span>Ziel</span><p>${escapeHtml(goal ? `${goal.distanceLabel} · ${goal.raceDate}` : "Marathon Template")}</p></div>
             <div class="nutrition-card"><span>Zielzeit</span><p>${escapeHtml(goal?.finishOnly ? "Ankommen" : secondsToTime(goal?.targetTimeSeconds) || state.pace.target)}</p></div>
             <div class="nutrition-card"><span>Bewertung</span><p>${escapeHtml(goal?.feasibilityRating || "Template-Ziel")}</p></div>
             <div class="nutrition-card"><span>Training</span><p>${escapeHtml(availability ? `${availability.desiredRunningDays} Lauftage · ${availability.currentWeeklyKm} km/Woche` : "14-Wochen-Plan")}</p></div>
@@ -3117,7 +3153,7 @@
     function renderOnboardingStep(step, data) {
       if (step === 0) {
         return `
-          <div class="warning-note">Du kannst den bestehenden Lissabon-Plan als Template behalten oder einen persönlichen Plan aus deinen Eingaben erzeugen. Bestehende Häkchen, Notizen und Backups werden nicht gelöscht.</div>
+          <div class="warning-note">Du kannst den bestehenden Template-Plan behalten oder einen persönlichen Plan aus deinen Eingaben erzeugen. Bestehende Häkchen, Notizen und Backups werden nicht gelöscht.</div>
           <div class="nutrition-card-grid" style="margin-top:12px;">
             <div class="nutrition-card"><h3>Template behalten</h3><p>Du nutzt den aktuellen Plan unverändert weiter.</p></div>
             <div class="nutrition-card"><h3>Personalisieren</h3><p>Die App erstellt einmalig einen regelbasierten Plan ohne Backend.</p></div>
@@ -3385,14 +3421,14 @@
         distanceType: "marathon",
         distanceKm: 42.195,
         distanceLabel: "Marathon",
-        raceName: "Lissabon Marathon",
+        raceName: "Template Marathon",
         raceDate: "2026-10-10",
         targetTimeSeconds: parseTime("3:50:00"),
         targetPaceSecondsPerKm: parseTime("3:50:00") / 42.195,
         finishOnly: false,
         predictedTimes: {},
         feasibilityRating: "Template-Ziel",
-        feasibilityReasons: ["Bestehender Lissabon-Plan unverändert behalten."],
+        feasibilityReasons: ["Bestehenden Template-Plan unverändert behalten."],
         weeksUntilRace: 14
       };
       saveAppSettings({ title: DEFAULT_APP_TITLE, planStartDate: DEFAULT_PLAN_START_DATE });
@@ -3711,7 +3747,7 @@
 
     function loadJson(key, fallback = null) {
       try {
-        const raw = localStorage.getItem(key);
+        const raw = safeLocalStorageGet(key);
         return raw ? JSON.parse(raw) : fallback;
       } catch (error) {
         return fallback;
@@ -3719,7 +3755,114 @@
     }
 
     function saveJson(key, value) {
-      localStorage.setItem(key, JSON.stringify(value));
+      return safeLocalStorageSet(key, JSON.stringify(value));
+    }
+
+    function migrateAppData(rawState = {}) {
+      const source = rawState?.state && !rawState.checks ? rawState.state : rawState;
+      return mergeState(defaultState(), {
+        ...(source || {}),
+        storageVersion: STORAGE_VERSION,
+        appVersion: APP_VERSION,
+        nutritionContentVersion: NUTRITION_CONTENT_VERSION
+      });
+    }
+
+    function validatePlainObject(value, label, errors) {
+      if (value !== undefined && value !== null && (typeof value !== "object" || Array.isArray(value))) {
+        errors.push(`${label} ist beschädigt.`);
+      }
+    }
+
+    function validateAppData(appData = {}) {
+      const errors = [];
+      const warnings = [];
+      const candidateState = appData.state || appData;
+      if (!candidateState || typeof candidateState !== "object" || Array.isArray(candidateState)) {
+        errors.push("Backup enthält keinen gültigen App-Zustand.");
+      } else {
+        ["checks", "actualKm", "dayNotes", "weekChecks", "customTasks", "taskMoves"].forEach(key => validatePlainObject(candidateState[key], key, errors));
+        validatePlainObject(candidateState.nutrition, "Ernährungsdaten", errors);
+        validatePlainObject(candidateState.pulse, "Pulsdaten", errors);
+        validatePlainObject(candidateState.pace, "Pacedaten", errors);
+      }
+
+      const runfuel = appData.runfuel || {};
+      if (runfuel.plan && (!Array.isArray(runfuel.plan.weeks) || !runfuel.plan.weeks.length)) {
+        errors.push("Der gespeicherte Plan enthält keine Wochen.");
+      }
+      if (runfuel.plan?.weeks) {
+        const missingDates = runfuel.plan.weeks
+          .flatMap(week => week.days || [])
+          .filter(day => !day.date);
+        if (missingDates.length) errors.push("Mindestens ein Trainingstag hat kein Datum.");
+      }
+      if (!runfuel.plan && appData.metadata?.format === "runfuel-dashboard-backup") {
+        warnings.push("Backup enthält keinen generierten Plan. Die App nutzt danach das Template.");
+      }
+      return { ok: errors.length === 0, errors, warnings };
+    }
+
+    function loadAppData() {
+      const runfuel = {};
+      Object.entries(RUNFUEL_KEYS).forEach(([name, key]) => {
+        const value = loadJson(key, undefined);
+        if (value !== undefined && value !== null) runfuel[name] = value;
+      });
+      return {
+        metadata: {
+          format: "runfuel-dashboard-backup",
+          appVersion: APP_VERSION,
+          storageVersion: STORAGE_VERSION,
+          nutritionContentVersion: NUTRITION_CONTENT_VERSION,
+          planGeneratorVersion: PLAN_GENERATOR_VERSION,
+          exportedAt: new Date().toISOString()
+        },
+        state: migrateAppData(state),
+        runfuel
+      };
+    }
+
+    function saveAppData(appData) {
+      const validation = validateAppData(appData);
+      if (!validation.ok) throw new Error(validation.errors.join(" "));
+      state = migrateAppData(appData.state || appData);
+      saveState();
+
+      if (appData.runfuel) {
+        Object.values(RUNFUEL_KEYS).forEach(safeLocalStorageRemove);
+        Object.entries(appData.runfuel).forEach(([name, value]) => {
+          const key = RUNFUEL_KEYS[name];
+          if (key && value !== undefined && value !== null) saveJson(key, value);
+        });
+      }
+
+      PLAN = loadVersionedPlan() || MARATHON_TEMPLATE_14_WEEK;
+      activeWeekId = PLAN.some(week => week.id === activeWeekId) ? activeWeekId : (PLAN[0]?.id || "");
+      selectedDayId = "";
+      return validation;
+    }
+
+    function exportBackup() {
+      return loadAppData();
+    }
+
+    function importBackup(rawBackup) {
+      const parsed = typeof rawBackup === "string" ? JSON.parse(rawBackup) : rawBackup;
+      const isRunfuelBackup = parsed?.metadata?.format === "runfuel-dashboard-backup" || parsed?.runfuel;
+      const appData = isRunfuelBackup ? parsed : { state: parsed, runfuel: null };
+      return saveAppData(appData);
+    }
+
+    function resetAppData() {
+      APP_STORAGE_KEYS.forEach(safeLocalStorageRemove);
+      state = defaultState();
+      PLAN = MARATHON_TEMPLATE_14_WEEK;
+      activeWeekId = getInitialWeekId();
+      selectedDayId = "";
+      saveState();
+      saveOnboardingDraft({ step: 0, data: {}, deferred: false, editing: false, resetAt: new Date().toISOString() });
+      return state;
     }
 
     function getAppSettings() {
@@ -4127,7 +4270,7 @@
       const requestedStart = availability.planStartDate ? parseDate(availability.planStartDate) : nextMonday(today);
       const start = startOfDay(requestedStart);
       const daysUntilRace = Math.max(1, Math.ceil((raceDate - start) / 86400000));
-      const totalWeeks = Math.max(4, Math.floor(daysUntilRace / 7));
+      const totalWeeks = Math.max(4, Math.ceil((daysUntilRace + 1) / 7));
       const startKm = Math.max(8, Number(availability.currentWeeklyKm) || 20);
       const distanceType = goal.distanceType;
       const peakFactor = { "5k": 1.25, "10k": 1.35, half: 1.45, marathon: 1.65 }[distanceType] || 1.4;
@@ -4253,6 +4396,108 @@
       day.note = "Warm-up, Strides, gleichmäßig starten";
       day.detail = { id: `test-${weekIndex}`, type: "test", text: `${testDistance} · kontrolliert all out`, km: day.kmMax || 8, zone: "Z4-Z5", rpe: "9", pace: paceRangeText(paces.longIntervals), warmup: "2-3 km locker + Lauf-ABC + 4 Steigerungen", cooldown: "2 km locker", purpose: "Zwischenziel und Pace-Neubewertung" };
       testEvents.push({ week: weekIndex + 1, date: day.date, title: testDistance });
+    }
+
+    function isDevelopmentMode() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        return params.has("dev") || window.location.protocol === "file:" || ["localhost", "127.0.0.1"].includes(window.location.hostname);
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function runSmokeTests() {
+      const errors = [];
+      const warnings = [];
+      const checks = [];
+      const record = (name, passed, detail = "") => {
+        checks.push({ name, passed, detail });
+        if (!passed) errors.push(detail || name);
+      };
+      const warn = (name, detail) => {
+        warnings.push(detail || name);
+        checks.push({ name, passed: true, warning: true, detail });
+      };
+
+      const smokeStart = nextMonday(startOfDay(new Date()));
+      const smokeProfile = {
+        name: "Smoke Test",
+        nutritionType: "vegetarisch",
+        deficiencies: ["Eisen", "Zink", "Folat", "B12"],
+        currentPainScore: 0,
+        gaitAffected: false
+      };
+      const smokePerformance = { distanceKm: 10, timeSeconds: parseTime("47:00"), effort: "race", longestRunKm: 18 };
+      const smokeGoal = {
+        distanceType: "marathon",
+        distanceKm: 42.195,
+        distanceLabel: "Marathon",
+        raceDate: isoDate(addDays(smokeStart, 13 * 7 + 5)),
+        targetTimeSeconds: parseTime("3:50:00"),
+        targetPaceSecondsPerKm: parseTime("3:50:00") / 42.195,
+        finishOnly: false
+      };
+      const smokeAvailability = {
+        currentWeeklyKm: 30,
+        desiredRunningDays: 4,
+        cyclingDaysPerWeek: 1,
+        strengthDaysPerWeek: 2,
+        availableWeekdays: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+        preferredLongRunDay: "So",
+        planStartDate: isoDate(smokeStart),
+        longestRunKm: 18
+      };
+      smokeGoal.predictedTimes = calculatePredictedTimes(smokePerformance);
+      smokeGoal.feasibilityRating = evaluateGoal(smokeGoal, smokePerformance, smokeAvailability, smokeProfile).rating;
+      const paces = calculateTrainingPaces(smokePerformance, smokeGoal.predictedTimes, smokeGoal);
+      const generated = generateTrainingPlan(smokeProfile, smokeGoal, smokeAvailability, paces);
+      const allGeneratedDays = generated.weeks.flatMap(week => week.days || []);
+      const activeDays = PLAN.flatMap(week => week.days || []);
+      const validFuelModes = new Set(Object.keys(NUTRITION_MODES));
+
+      record("Plan kann erzeugt werden", Array.isArray(generated.weeks) && generated.weeks.length >= 4, "Plan-Generator erzeugt keine gültigen Wochen.");
+      record("Race Day existiert", allGeneratedDays.some(day => day.date === smokeGoal.raceDate && day.tasks.some(task => task.type === "race")), "Race Day fehlt im generierten Plan.");
+      record("Jeder Trainingstag hat ein Datum", allGeneratedDays.every(day => !!day.date), "Mindestens ein generierter Trainingstag hat kein Datum.");
+      record("Fuel Modes sind gültig", activeDays.every(day => validFuelModes.has(getNutritionMode(day))), "Mindestens ein aktueller Trainingstag hat einen unbekannten Fuel Mode.");
+      const numericPaces = Object.values(paces).filter(range => Number.isFinite(range?.minSecondsPerKm) || Number.isFinite(range?.maxSecondsPerKm));
+      record("Trainingspace-Bereiche sind gültig", numericPaces.every(range => Number.isFinite(range.minSecondsPerKm) && Number.isFinite(range.maxSecondsPerKm) && range.minSecondsPerKm <= range.maxSecondsPerKm), "Mindestens ein Pace-Bereich ist ungültig.");
+      record("Strides bleiben ohne falsche Pace-Zahl", !!paces.strides?.note && paces.strides.minSecondsPerKm === null && paces.strides.maxSecondsPerKm === null, "Strides sollen technisch gesteuert werden, nicht über eine fixe Pace.");
+      record("Spinat nicht primäre Eisenquelle", !MICRO_CARDS.find(card => card.title.includes("Eisen"))?.foods.includes("Spinat"), "Spinat steht noch als primäre Eisenquelle in der Eisenkarte.");
+      record("Medizinische Dosierungen werden nicht generiert", !JSON.stringify({ cards: MICRO_CARDS, checks: NUTRITION_CHECKS }).match(/\b\d+\s?(mg|mcg|µg|IE|I\.E\.)\b/i), "Content enthält automatisch wirkende Dosierungsangaben.");
+
+      if (typeof FOOD_LIBRARY === "undefined") {
+        warn("Food-ID-Prüfung übersprungen", "Keine separate FOOD_LIBRARY im statischen Template gefunden.");
+      } else {
+        const ids = FOOD_LIBRARY.map(food => food.id);
+        record("Food-IDs sind eindeutig", ids.length === new Set(ids).size, "Doppelte Food-ID gefunden.");
+      }
+
+      try {
+        JSON.stringify(exportBackup());
+        record("Backup kann serialisiert werden", true);
+      } catch (error) {
+        record("Backup kann serialisiert werden", false, error.message);
+      }
+
+      const validation = validateAppData({ state, runfuel: { plan: getGeneratedPlan() } });
+      record("Aktueller localStorage-Datensatz ist valide", validation.ok, validation.errors.join(" "));
+      validation.warnings.forEach(item => warnings.push(item));
+
+      const result = {
+        ok: errors.length === 0,
+        checks,
+        errors,
+        warnings,
+        versions: {
+          app: APP_VERSION,
+          storage: STORAGE_VERSION,
+          nutrition: NUTRITION_CONTENT_VERSION,
+          planGenerator: PLAN_GENERATOR_VERSION
+        }
+      };
+      if (isDevelopmentMode()) console.info("Runfuel smoke tests", result);
+      return result;
     }
 
     function initializePhase1ShellNow() {
@@ -4438,7 +4683,7 @@
       }
 
       if (event.target.closest("#downloadCsv")) {
-        downloadFile("lissabon-marathon-trainingstagebuch.csv", buildCsv(), "text/csv;charset=utf-8");
+        downloadFile("runfuel-trainingstagebuch.csv", buildCsv(), "text/csv;charset=utf-8");
         setExportStatus("CSV exportiert.");
         return;
       }
@@ -4450,8 +4695,8 @@
       }
 
       if (event.target.closest("#downloadJson")) {
-        downloadFile("lissabon-marathon-dashboard-backup.json", JSON.stringify(state, null, 2), "application/json;charset=utf-8");
-        setExportStatus("Backup gespeichert.");
+        downloadFile("runnies-dashboard-backup.json", JSON.stringify(exportBackup(), null, 2), "application/json;charset=utf-8");
+        setExportStatus("Backup inklusive Profil, Plan, Logs, Ernährung und Einstellungen gespeichert.");
         return;
       }
 
@@ -4479,8 +4724,7 @@
 
       if (event.target.closest("#resetAll")) {
         if (confirm("Alle gespeicherten Einträge löschen?")) {
-          state = defaultState();
-          saveState();
+          resetAppData();
           render();
           setExportStatus("Zurückgesetzt.");
         }
@@ -4620,20 +4864,23 @@
       const reader = new FileReader();
       reader.onload = () => {
         try {
-          state = mergeState(defaultState(), JSON.parse(reader.result));
-          saveState();
+          const result = importBackup(reader.result);
           render();
-          setExportStatus("Backup geladen.");
+          setExportStatus(result.warnings.length ? `Backup geladen. Hinweis: ${result.warnings.join(" ")}` : "Backup geladen.");
         } catch (error) {
-          setExportStatus("Backup konnte nicht gelesen werden.");
+          setExportStatus(`Backup konnte nicht gelesen werden: ${error.message || "ungültiges JSON"}`);
         }
       };
       reader.readAsText(file);
       event.target.value = "";
     });
 
+    window.runSmokeTests = runSmokeTests;
     render();
     hydrateCloudState();
+    if (isDevelopmentMode()) {
+      runSmokeTests();
+    }
   </script>
 </body>
 </html>
