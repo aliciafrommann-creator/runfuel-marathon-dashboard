@@ -2,6 +2,11 @@ import { ensureDashboardSchema, getSql } from "@/lib/db";
 
 export type DashboardState = Record<string, unknown>;
 
+type DashboardStateRow = {
+  state: unknown;
+  updated_at: string;
+};
+
 export async function getDashboardState(userId: string) {
   await ensureDashboardSchema();
   const sql = getSql();
@@ -10,7 +15,7 @@ export async function getDashboardState(userId: string) {
     FROM dashboard_states
     WHERE user_id = ${userId}
     LIMIT 1
-  `;
+  ` as DashboardStateRow[];
   return rows[0] ? { state: rows[0].state as DashboardState, updatedAt: rows[0].updated_at as string } : null;
 }
 
