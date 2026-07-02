@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/dashboard-static/lissabon-marathon-dashboard.html"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/dashboard-static/lissabon-marathon-dashboard.html"
+    }
+  ]
+}
