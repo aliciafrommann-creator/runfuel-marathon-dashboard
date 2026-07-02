@@ -19,6 +19,10 @@ type ClerkUserCreatedEvent = {
 
 type ClerkEvent = ClerkUserCreatedEvent | { type: string; data: unknown };
 
+function isUserCreatedEvent(event: ClerkEvent): event is ClerkUserCreatedEvent {
+  return event.type === "user.created" && typeof event.data === "object" && event.data !== null;
+}
+
 export async function POST(request: Request) {
   const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
   if (!webhookSecret) {
@@ -46,7 +50,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
-  if (event.type === "user.created") {
+  if (isUserCreatedEvent(event)) {
     const primaryEmail = event.data.email_addresses?.find(
       email => email.id === event.data.primary_email_address_id
     )?.email_address || event.data.email_addresses?.[0]?.email_address;
